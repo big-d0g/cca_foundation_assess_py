@@ -25,4 +25,6 @@ class Warehouse:
                 entry.stock -= quantity
 
             else:
-                print(f"Not enough stock to adjust product {product}")
+                raise ValueError(f"Not enough stock available for product: {product}")
+
+        return self

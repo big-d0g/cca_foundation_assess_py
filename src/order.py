@@ -45,17 +45,11 @@ class Order:
         return self.total_price + self.shipping_cost
 
     def confirm(self, warehouse: Warehouse, sales_history: "SalesHistory") -> None:
-        for entry in warehouse.catalogue:
-            for item in self.items:
-                if (
-                    item.product.id == entry.product.id
-                    and entry.stock - item.quantity >= 0
-                ):
-                    entry.stock -= item.quantity
+        for item in self.items:
+            try:
+                warehouse.adjust_stock_level(item.product, item.quantity)
+                self.status = Status.CONFIRMED
 
-                    self.status = Status.CONFIRMED
-
-                    if sales_history:
-                        sales_history.update(self)
-                else:
-                    print(f"{item.product} is not available")
+                sales_history.update(self)
+            except ValueError as e:
+                print(e)
