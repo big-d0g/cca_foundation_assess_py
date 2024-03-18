@@ -2,7 +2,7 @@ import pytest
 
 from src.address import Address
 from src.countries import Country
-from src.order import Order, Item
+from src.order import Order, Item, Status
 from src.product import Product
 
 
@@ -54,3 +54,13 @@ def test_order_get_total_including_shipping_successful(mock_item: Item, mock_add
     result = order.get_total_price_including_shipping()
 
     assert result == 54.99
+
+
+def test_order_status_updates_on_confirmation(mock_item: Item, mock_address: Address) -> None:
+    order = Order(shipping_address=mock_address, items=[mock_item])
+
+    assert order.status == Status.PENDING
+
+    order.confirm()
+
+    assert order.status == Status.CONFIRMED

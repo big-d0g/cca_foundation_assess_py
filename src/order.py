@@ -1,8 +1,14 @@
 from dataclasses import dataclass
+from enum import Enum
 
 from src.address import Address
 from src.product import Product
 from src.shipping import calculate_shipping
+
+
+class Status(Enum):
+    PENDING = "Pending"
+    CONFIRMED = "Confirmed"
 
 
 @dataclass
@@ -15,6 +21,7 @@ class Item:
 class Order:
     shipping_address: Address
     items: list[Item]
+    status: Status = Status.PENDING
 
     def add_item(self, item: Item) -> None:
         self.items.append(item)
@@ -33,3 +40,6 @@ class Order:
 
     def get_total_price_including_shipping(self) -> float:
         return self.total_price + self.shipping_cost
+
+    def confirm(self) -> None:
+        self.status = Status.CONFIRMED
