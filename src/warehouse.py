@@ -34,4 +34,7 @@ class Warehouse:
             if entry.product.id == product.id:
                 entry.stock += quantity
 
+            else:
+                self.catalogue.append(Entry(product, quantity))
+
         return self

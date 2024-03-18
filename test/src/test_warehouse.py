@@ -54,3 +54,17 @@ def test_warehouse_updates_catalogue_when_receives_new_stock_for_existing_produc
 
     assert len(warehouse.catalogue) == 1
     assert warehouse.catalogue[0].stock == expected_result
+
+
+def test_warehouse_receives_stock_adds_new_product_to_catalogue() -> None:
+    product_1 = Product(id=1, description="test product", price=10.00)
+    product_2 = Product(id=2, description="test product 2", price=99.99)
+    item = Item(product=product_2, quantity=100)
+    entry = Entry(product=product_1, stock=50)
+
+    warehouse = Warehouse(catalogue=[entry])
+
+    warehouse.receive_stock(item.product, item.quantity)
+
+    assert len(warehouse.catalogue) == 2
+    assert warehouse.catalogue[1].product == item.product
