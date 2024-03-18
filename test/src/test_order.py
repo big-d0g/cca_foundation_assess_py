@@ -1,27 +1,6 @@
-import pytest
-
 from src.address import Address
-from src.countries import Country
+
 from src.order import Order, Item, Status
-from src.product import Product
-
-
-@pytest.fixture
-def mock_item() -> Item:
-    product = Product(id=1, description="test product", price=10.00)
-
-    return Item(product=product, quantity=5)
-
-
-@pytest.fixture
-def mock_address() -> Address:
-    return Address(
-        house="666",
-        street="Street Name",
-        city="City",
-        postcode="postcode",
-        country=Country.UNITED_KINGDOM,
-    )
 
 
 def test_order_add_item_successful(mock_item: Item, mock_address: Address) -> None:
@@ -48,7 +27,9 @@ def test_order_calculates_shipping_cost(mock_item: Item, mock_address: Address) 
     assert result == 4.99
 
 
-def test_order_get_total_including_shipping_successful(mock_item: Item, mock_address: Address) -> None:
+def test_order_get_total_including_shipping_successful(
+    mock_item: Item, mock_address: Address
+) -> None:
     order = Order(shipping_address=mock_address, items=[mock_item])
 
     result = order.get_total_price_including_shipping()
@@ -56,7 +37,9 @@ def test_order_get_total_including_shipping_successful(mock_item: Item, mock_add
     assert result == 54.99
 
 
-def test_order_status_updates_on_confirmation(mock_item: Item, mock_address: Address) -> None:
+def test_order_status_updates_on_confirmation(
+    mock_item: Item, mock_address: Address
+) -> None:
     order = Order(shipping_address=mock_address, items=[mock_item])
 
     assert order.status == Status.PENDING
