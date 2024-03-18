@@ -6,5 +6,5 @@ from src.order import Order
 class SalesHistory:
     orders: list[Order]
 
-    def update(self, order: Order):
+    def update(self, order: Order) -> None:
         self.orders.append(order)
