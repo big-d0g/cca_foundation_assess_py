@@ -38,3 +38,19 @@ def test_warehouse_adjust_stock_raises_error_when_not_enough_products() -> None:
 
     with pytest.raises(ValueError):
         warehouse.adjust_stock_level(item.product, item.quantity)
+
+
+def test_warehouse_updates_catalogue_when_receives_new_stock_for_existing_product() -> (
+    None
+):
+    product = Product(id=1, description="test product", price=10.00)
+    item = Item(product=product, quantity=100)
+    entry = Entry(product=product, stock=50)
+    warehouse = Warehouse(catalogue=[entry])
+
+    expected_result = entry.stock + item.quantity
+
+    warehouse.receive_stock(item.product, item.quantity)
+
+    assert len(warehouse.catalogue) == 1
+    assert warehouse.catalogue[0].stock == expected_result

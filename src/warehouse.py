@@ -28,3 +28,10 @@ class Warehouse:
                 raise ValueError(f"Not enough stock available for product: {product}")
 
         return self
+
+    def receive_stock(self, product: Product, quantity: int) -> Self:
+        for entry in self.catalogue:
+            if entry.product.id == product.id:
+                entry.stock += quantity
+
+        return self
