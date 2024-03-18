@@ -14,19 +14,18 @@ def mock_item() -> Item:
 
 
 @pytest.fixture
-def mock_order(mock_item: Item) -> Order:
-    address = Address(
+def mock_address() -> Address:
+    return Address(
         house="666",
         street="Street Name",
         city="City",
         postcode="postcode",
         country=Country.UNITED_KINGDOM,
     )
-    return Order(shipping_address=address, items=[])
 
+def test_order_add_item_successful(mock_item: Item, mock_address: Address) -> None:
+    order = Order(shipping_address=mock_address, items=[])
+    order.add_item(mock_item)
 
-def test_order_add_item_successful(mock_item: Item, mock_order: Order) -> None:
-    mock_order.add_item(mock_item)
-
-    assert len(mock_order.items) == 1
-    assert mock_item in mock_order.items
+    assert len(order.items) == 1
+    assert mock_item in order.items
