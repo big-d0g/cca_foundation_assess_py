@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from typing import Self
+
 from src.product import Product
 
 
@@ -16,3 +18,12 @@ class Warehouse:
         for entry in self.catalogue:
             if entry.product.id == product.id:
                 return entry.stock
+
+    def adjust_stock_level(self, product: Product, quantity: int) -> Self:
+        for entry in self.catalogue:
+            if entry.product.id == product.id:
+                if entry.stock - quantity >= 0:
+                    entry.stock -= quantity
+
+                else:
+                    print(f"Not enough stock to adjust product {product}")
