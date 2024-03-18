@@ -17,3 +17,10 @@ class Order:
 
     def add_item(self, item: Item) -> None:
         self.items.append(item)
+
+    def get_total_price(self) -> float:
+        order_total = 0
+        for item in self.items:
+            order_total += item.product.price * item.quantity
+
+        return order_total
