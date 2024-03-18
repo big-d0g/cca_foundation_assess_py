@@ -1,3 +1,5 @@
+import pytest
+
 from src.product import Product
 from src.warehouse import Warehouse, Entry
 from src.order import Item
@@ -15,7 +17,7 @@ def test_warehouse_returns_correct_stock_level() -> None:
     assert result == entry.stock
 
 
-def test_warehouse_adjust_stock_level_updates_entry_of_requested_product() -> None:
+def test_warehouse_adjust_stock_level_updates_stock_when_valid_quantity_given() -> None:
     product = Product(id=1, description="test product", price=10.00)
     item = Item(product=product, quantity=50)
     entry = Entry(product=product, stock=100)
@@ -26,3 +28,13 @@ def test_warehouse_adjust_stock_level_updates_entry_of_requested_product() -> No
     warehouse.adjust_stock_level(item.product, item.quantity)
 
     assert entry.stock == expected_result
+
+
+def test_warehouse_adjust_stock_raises_error_when_not_enough_products() -> None:
+    product = Product(id=1, description="test product", price=10.00)
+    item = Item(product=product, quantity=100)
+    entry = Entry(product=product, stock=50)
+    warehouse = Warehouse(catalogue=[entry])
+
+    with pytest.raises(ValueError):
+        warehouse.adjust_stock_level(item.product, item.quantity)
