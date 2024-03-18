@@ -14,3 +14,6 @@ class Item:
 class Order:
     shipping_address: Address
     items: list[Item]
+
+    def add_item(self, item: Item) -> None:
+        self.items.append(item)
