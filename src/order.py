@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from src.address import Address
 from src.product import Product
+from src.shipping import calculate_shipping
 
 
 @dataclass
@@ -25,3 +26,7 @@ class Order:
             order_total += item.product.price * item.quantity
 
         return order_total
+
+    @property
+    def shipping_cost(self) -> float:
+        return calculate_shipping(self.shipping_address.country.value, self.total_price)
