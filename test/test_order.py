@@ -46,3 +46,11 @@ def test_order_calculates_shipping_cost(mock_item: Item, mock_address: Address) 
     result = order.shipping_cost
 
     assert result == 4.99
+
+
+def test_order_get_total_including_shipping_successful(mock_item: Item, mock_address: Address) -> None:
+    order = Order(shipping_address=mock_address, items=[mock_item])
+
+    result = order.get_total_price_including_shipping()
+
+    assert result == 54.99

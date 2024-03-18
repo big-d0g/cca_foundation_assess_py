@@ -30,3 +30,6 @@ class Order:
     @property
     def shipping_cost(self) -> float:
         return calculate_shipping(self.shipping_address.country.value, self.total_price)
+
+    def get_total_price_including_shipping(self) -> float:
+        return self.total_price + self.shipping_cost
