@@ -4,6 +4,7 @@ from enum import Enum
 from src.address import Address
 from src.product import Product
 from src.shipping import calculate_shipping
+from src.warehouse import Warehouse
 
 
 class Status(Enum):
@@ -41,5 +42,15 @@ class Order:
     def get_total_price_including_shipping(self) -> float:
         return self.total_price + self.shipping_cost
 
-    def confirm(self) -> None:
-        self.status = Status.CONFIRMED
+    def confirm(self, warehouse: Warehouse) -> None:
+        for entry in warehouse.catalogue:
+            for item in self.items:
+                if (
+                    item.product.id == entry.product.id
+                    and entry.stock - item.quantity >= 0
+                ):
+                    entry.stock -= item.quantity
+
+                    self.status = Status.CONFIRMED
+                else:
+                    print(f"{item.product} is not available")
